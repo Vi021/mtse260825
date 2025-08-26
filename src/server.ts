@@ -1,0 +1,25 @@
+import express, { type Express } from "express";
+import bodyParser from "body-parser";
+import viewEngine from "./config/viewEngine.js";
+import initWebRoutes from "./route/web.js";
+import { connectDB } from "./config/configdb.js";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const app: Express = express();
+
+// config app
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+viewEngine(app);
+initWebRoutes(app);
+connectDB();
+
+const port = process.env.PORT || 6969;
+
+// run server
+app.listen(port, () => {
+  console.log(`Backend NodeJS is running on port: ${port}`);
+});
