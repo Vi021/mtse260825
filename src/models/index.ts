@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { Sequelize, DataTypes } from "sequelize";
+import { Sequelize } from "sequelize";
 import process from "process";
 import { fileURLToPath, pathToFileURL } from "url";
 
@@ -30,7 +30,7 @@ const modelFiles = fs
     (file) =>
       file.indexOf(".") !== 0 &&
       file !== basename &&
-       file.endsWith(".ts") &&
+       file.endsWith(".js") &&
       !file.endsWith(".d.ts") &&
       !file.endsWith(".test.ts")
   );
@@ -38,7 +38,10 @@ const modelFiles = fs
 for (const file of modelFiles) {
   const modelPath = pathToFileURL(path.join(__dirname, file)).href;
   const modelModule = await import(modelPath);
-  const model = modelModule.default(sequelize, DataTypes);
+  
+  const modelFactory = modelModule.default || modelModule;
+  const model = modelFactory(sequelize);
+  
   db[model.name] = model;
 }
 

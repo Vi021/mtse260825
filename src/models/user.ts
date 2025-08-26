@@ -1,5 +1,4 @@
-// user.ts
-import { Model, DataTypes, Sequelize, type Optional } from "sequelize";
+import { Model, Sequelize, DataTypes, type Optional } from "sequelize";
 
 interface UserAttributes {
   id: number;
@@ -17,31 +16,37 @@ interface UserAttributes {
   updatedAt?: Date;
 }
 
-type UserCreationAttributes = Optional<UserAttributes, "id" | "image" | "createdAt" | "updatedAt">;
+// Some fields are optional when creating
+type UserCreationAttributes = Optional<
+  UserAttributes,
+  "id" | "image" | "createdAt" | "updatedAt"
+>;
+
+class User
+  extends Model<UserAttributes, UserCreationAttributes>
+  implements UserAttributes
+{
+  public id!: number;
+  public email!: string;
+  public password!: string;
+  public firstName!: string;
+  public lastName!: string;
+  public address!: string;
+  public phoneNumber!: string;
+  public gender!: boolean;
+  public image!: string | null;
+  public roleId!: string;
+  public positionId!: string;
+
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+
+  static associate(models: any) {
+    // Example: User.belongsTo(models.Role, { foreignKey: "roleId" });
+  }
+}
 
 export default (sequelize: Sequelize) => {
-  class User extends Model<UserAttributes, UserCreationAttributes>
-    implements UserAttributes {
-    public id!: number;
-    public email!: string;
-    public password!: string;
-    public firstName!: string;
-    public lastName!: string;
-    public address!: string;
-    public phoneNumber!: string;
-    public gender!: boolean;
-    public image!: string | null;
-    public roleId!: string;
-    public positionId!: string;
-
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
-
-    static associate(models: any) {
-      // e.g. User.belongsTo(models.Role, { foreignKey: "roleId" });
-    }
-  }
-
   User.init(
     {
       id: {
@@ -49,8 +54,14 @@ export default (sequelize: Sequelize) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      email: { type: DataTypes.STRING, allowNull: false },
-      password: { type: DataTypes.STRING, allowNull: false },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
       address: DataTypes.STRING,

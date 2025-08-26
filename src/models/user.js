@@ -1,32 +1,37 @@
-// user.ts
-import { Model, DataTypes, Sequelize } from "sequelize";
-export default (sequelize) => {
-    class User extends Model {
-        id;
-        email;
-        password;
-        firstName;
-        lastName;
-        address;
-        phoneNumber;
-        gender;
-        image;
-        roleId;
-        positionId;
-        createdAt;
-        updatedAt;
-        static associate(models) {
-            // e.g. User.belongsTo(models.Role, { foreignKey: "roleId" });
-        }
+import { Model, Sequelize, DataTypes } from "sequelize";
+class User extends Model {
+    id;
+    email;
+    password;
+    firstName;
+    lastName;
+    address;
+    phoneNumber;
+    gender;
+    image;
+    roleId;
+    positionId;
+    createdAt;
+    updatedAt;
+    static associate(models) {
+        // Example: User.belongsTo(models.Role, { foreignKey: "roleId" });
     }
+}
+export default (sequelize) => {
     User.init({
         id: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true,
         },
-        email: { type: DataTypes.STRING, allowNull: false },
-        password: { type: DataTypes.STRING, allowNull: false },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         firstName: DataTypes.STRING,
         lastName: DataTypes.STRING,
         address: DataTypes.STRING,
