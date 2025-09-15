@@ -15,7 +15,7 @@ export const getUserById = async (userId) => {
 export const updateUser = async (data) => {
     const user = await db.User.findOne({ where: { id: data.id } });
     if (user) {
-        Object.assign(user, data);
+        user.set(data);
         await user.save();
         return db.User.findAll({ raw: true });
     }

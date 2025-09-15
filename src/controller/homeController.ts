@@ -49,13 +49,13 @@ export const getEditCRUD = async (req: Request, res: Response): Promise<void> =>
   }
 
   const userData = await CRUDService.getUserById(userId);
-  res.render("users/editUser.ejs", { data: userData });
+  res.render("users/updateUser.ejs", { data: userData });
 };
 
 export const putCRUD = async (req: Request, res: Response): Promise<void> => {
   const data = req.body;
   const updated = await CRUDService.updateUser(data);
-  res.render("users/editUser.ejs", { datalist: updated });
+  res.render("users/findAllUser.ejs", { datalist: updated });
 };
 
 export const deleteCRUD = async (req: Request, res: Response): Promise<void> => {
